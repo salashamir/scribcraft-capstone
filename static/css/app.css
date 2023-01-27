@@ -1,0 +1,14 @@
+.app {
+    display:flex;
+    min-height: 100vh;
+}
+
+.app .container {
+    flex-grow: 1;
+    padding: 0 6rem;
+}
+
+.cozy-bcg {
+    background: linear-gradient(rgba(0, 0, 0, 0.575), rgba(0, 0, 0, 0.566)),
+    url("../images/pexels-lil-artsy-3368816.jpg") center / cover no-repeat fixed;
+}

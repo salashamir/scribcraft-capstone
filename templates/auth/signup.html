@@ -1,0 +1,20 @@
+{% extends './anon-home.html' %}
+
+{% block title %}Signup{% endblock %}
+
+{% block form %}
+    <form method="POST" class="auth-form">
+        <h2 class="form-heading">Signup!</h2>
+        {{ form.hidden_tag() }}
+        {% for field in form if field.widget.input_type != 'hidden' %}
+            {% for error in field.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+            <label class="form-label">
+                <span class="form-span">{{field.label.text}}</span>
+                {{ field(class="form-input") }}
+            </label>
+        {% endfor %}
+        <button type="submit" class="btn">Register</button>
+    </form>
+{% endblock %}

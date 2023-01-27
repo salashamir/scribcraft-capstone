@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <div class="app">
+        {% include 'components/sidebar.html' %}
+        <div class="container">
+            {% include 'components/navbar.html' %}
+            {% block dashboard %}
+            {% endblock %}
+            {% include 'components/footer.html' %}
+        </div>
+        {% include 'components/users.html' %}
+    </div>
+{% endblock %}
+

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <div class="app cozy-bcg">
+        <div class="container">
+            {% include 'components/navbar.html' %}
+            {% block form %}
+            {% endblock %}
+            {% include 'components/footer.html' %}
+        </div>
+    </div>
+{% endblock %}
+

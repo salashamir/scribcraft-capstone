@@ -1,0 +1,32 @@
+{% from 'components/macros.html' import avatar %}
+
+<div class="sidebar">
+    <div class="sidebar-content">
+        <div class="user">
+            {{ avatar("https://www.zelda.com/links-awakening/assets/img/home/hero-char.png") }}
+            <p>Hi, Joshua!</p>
+        </div>
+        <nav class="links">
+            <ul>
+                <li>
+                    <a href="/">
+                        <img src="{{url_for('static', filename='images/dashboard_icon.svg')}}" alt="dashboard icon">
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/create-scrib">
+                        <img src="{{url_for('static', filename='images/add_icon.svg')}}" alt="add new content icon">
+                        <span>Create scrib</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/create-scrib">
+                        <img src="{{url_for('static', filename='images/user_icon.svg')}}" alt="user icon">
+                        <span>Profile</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+.sidebar {
+    width: 25rem;
+    min-width: 25rem;
+    background-color: var(--primary-color);
+    min-height: 100vh;
+    position: relative;
+    color: #fff;
+}
+
+.sidebar-content {
+    position: fixed;
+    width: inherit;
+}
+
+.sidebar .user {
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 1px;
+    padding: 4rem 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.sidebar .links {
+    margin-top: 8rem;
+    margin-left: 2rem;
+}
+
+.sidebar .links li {
+    margin-top: 1rem;
+}
+
+.sidebar .links a:link, .sidebar .links a:visited {
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    letter-spacing: 1px;
+    padding: 1rem;
+    text-decoration: none;
+    width: 100%;
+    color: #fff;
+
+    transition: all 0.3s ease;
+}
+
+.sidebar .links a:hover, .sidebar .links a:active {
+    transform: scale(1.05);
+    color: rgb(212, 175, 249);
+    text-decoration: underline;
+}
+
+.sidebar .links img {
+    height: 2rem;
+    margin-right: 1rem;
+    filter: invert(100%);
+}
+
+.sidebar .links a.active {
+    color: #555;
+    background-color: var(--bg-color);
+    border-radius: ;
+}
+
+.sidebar .links .active img {
+    filter: invert(40%);
+}
+
+.sidebar .user .avatar {
+    margin-bottom: 10px;
+    width: 7rem;
+    height: 7rem;
+    border: 3px solid #fff;
+}
+
