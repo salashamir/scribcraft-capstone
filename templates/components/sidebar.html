@@ -3,8 +3,8 @@
 <div class="sidebar">
     <div class="sidebar-content">
         <div class="user">
-            {{ avatar("https://www.zelda.com/links-awakening/assets/img/home/hero-char.png") }}
-            <p>Hi, Joshua!</p>
+            {{ avatar(g.user.image_url) }}
+            <p>Hi, {{g.user.username}}!</p>
         </div>
         <nav class="links">
             <ul>

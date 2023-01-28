@@ -55,6 +55,9 @@ def user_logout():
 
 @app.route('/')
 def root():
+    if not g.user:
+        flash("Login or register to view/create scribs", "danger")
+        return redirect(url_for('login'))
     return render_template('home.html')
 
 
@@ -63,6 +66,10 @@ def root():
 
 @app.route('/login')
 def login():
+    """Login form page for registered users. Should redirect to dashboard if user is already logged in"""
+
+    if g.user:
+        return redirect('/')
 
     form = UserLoginForm()
     return render_template('auth/login.html', form=form)
@@ -70,7 +77,13 @@ def login():
 
 @app.route('/signup')
 def signup():
+    """Signup form page for registered users. Should redirect to dashboard if user is already logged in"""
+
+    if g.user:
+        return redirect('/')
+
     form = UserSignupForm()
+
     return render_template('auth/signup.html', form=form)
 
 
