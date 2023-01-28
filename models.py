@@ -25,11 +25,11 @@ class User(db.Model):
     username = db.Column(db.String(20), nullable=False, unique=True)
     email = db.Column(db.String(100), nullable=False, unique=True)
     image_url = db.Column(
-        db.String(100), default="/static/images/quill_and_ink.png")
+        db.String(150), default="/static/images/quill_and_ink.png")
     date_time = db.Column(db.DateTime(timezone=True),
                           server_default=func.now())
     about_me = db.Column(db.Text)
-    password = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(150), nullable=False)
     scribs = db.relationship('Scrib', backref="user")
     comments = db.relationship("Comment", backref="user")
 
@@ -67,6 +67,7 @@ class Scrib(db.Model):
     __tablename__ = "scribs"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.Text, nullable=False)
     prompt = db.Column(db.Text, nullable=False)
     scrib_text = db.Column(db.Text, nullable=False)
     date_time = db.Column(db.DateTime(timezone=True),

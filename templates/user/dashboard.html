@@ -1,7 +1,9 @@
+{% from 'components/macros.html' import scribs_list  %}
+
 {% extends './home.html' %}
 
 {% block title %}Dashboard{% endblock %}
 
 {% block dashboard %}
-
+    {{scribs_list(scribs)}}
 {% endblock %}

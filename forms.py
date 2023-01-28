@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, TextAreaField
-from wtforms.validators import DataRequired, Email, Length, Optional
+from wtforms.validators import DataRequired, Email, Length, Optional, EqualTo
 
 # form classes
 
@@ -22,7 +22,7 @@ class UserSignupForm(FlaskForm):
     image_url = StringField(
         "(Optional )URL for avatar image", validators=[Optional()])
     password = PasswordField('Password', validators=[Length(
-        min=8, message="Password must be longer than 7 characters."), DataRequired(message="Password field cannot be blank.")])
+        min=8, message="Password must be longer than 7 characters."), DataRequired(message="Password field cannot be blank."), EqualTo(fieldname='password_confirm', message="Passwords must match.")])
     password_confirm = PasswordField('Confirm password', validators=[Length(
         min=8, message="Password must be longer than 7 characters."), DataRequired(message="Password field cannot be blank.")])
 

@@ -1,5 +1,6 @@
 import os
 
+from dotenv import load_dotenv, find_dotenv
 from flask import Flask, url_for, render_template, request, flash, redirect, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
@@ -7,6 +8,7 @@ from sqlalchemy.exc import IntegrityError
 from forms import CommentForm, UserSignupForm, UserLoginForm
 from models import db, connect_db, User, Scrib, Comment
 
+load_dotenv(find_dotenv())
 
 CURRENT_USER_KEY = "current_user"
 
@@ -20,8 +22,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
-app.config['SECRET_KEY'] = os.environ.get(
-    'SECRET_KEY', "super_secret_key_763728")
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 toolbar = DebugToolbarExtension(app)
 
 connect_db(app)
@@ -58,13 +59,15 @@ def root():
     if not g.user:
         flash("Login or register to view/create scribs", "danger")
         return redirect(url_for('login'))
-    return render_template('home.html')
+
+    scribs = Scrib.query.all()
+    return render_template('user/dashboard.html', scribs=scribs)
 
 
 # AUTH ROUTES
 
 
-@app.route('/login')
+@app.route('/login', methods=["GET", "POST"])
 def login():
     """Login form page for registered users. Should redirect to dashboard if user is already logged in"""
 
@@ -72,10 +75,19 @@ def login():
         return redirect('/')
 
     form = UserLoginForm()
+
+    if form.validate_on_submit():
+        user = User.authenticate(form.username.data, form.password.data)
+
+        if user:
+            user_login(user)
+            flash(f'Welcome, {user.username}!', 'success')
+            return redirect('/')
+
     return render_template('auth/login.html', form=form)
 
 
-@app.route('/signup')
+@app.route('/signup', methods=["GET", "POST"])
 def signup():
     """Signup form page for registered users. Should redirect to dashboard if user is already logged in"""
 
@@ -84,12 +96,34 @@ def signup():
 
     form = UserSignupForm()
 
+    if form.validate_on_submit():
+        try:
+            user = User.signup(
+                username=form.username.data,
+                password=form.password.data,
+                email=form.email.data,
+                image_url=form.image_url.data
+            )
+            db.session.commit()
+
+        except IntegrityError:
+            flash('Username already taken.', 'danger')
+            return render_template('auth/signup.html', form=form)
+
+        user_login(user)
+
+        return redirect(url_for('root'))
+
     return render_template('auth/signup.html', form=form)
 
 
 @app.route('/logout')
 def logout():
-    pass
+    """Log user out of application by removing their id from the session"""
+
+    user_logout()
+    flash("User logged out!", "success")
+    return redirect(url_for('login'))
 
 
 ##############################################################################
