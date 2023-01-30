@@ -19,11 +19,15 @@
     margin-right: auto;
 }
 
-.light_logo {
+.logo a {
+    text-decoration: none;
+}
+
+.light_logo a {
     color: #e4dbff;
 }
 
-.dark_logo {
+.dark_logo a {
     color: #444;
 }
 
@@ -38,14 +42,13 @@
     filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, 0.818));
 }
 
-.navbar a {
+.navbar .nav-link {
     text-decoration: none;
     margin-right: 2rem;
 }
 
 .nav-link:link,.nav-link:visited {
     color: #f1ecff;
-
     transition: all 0.25s ease;
 }
 

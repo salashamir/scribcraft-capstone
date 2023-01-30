@@ -1,0 +1,21 @@
+{% extends './home.html' %}
+
+{% block title %}New Scrib{% endblock %}
+
+{% block center_pane %}
+    <h2 class="page-title">Create a new scrib!</h2>
+    <form method="POST" class="scrib-form">
+        <h2 class="form-heading">New scrib!</h2>
+        {{ form.hidden_tag() }}
+        {% for field in form if field.widget.input_type != 'hidden' %}
+            {% for error in field.errors %}
+                <span class="text-danger">{{ error }}</span>
+            {% endfor %}
+            <label class="form-label">
+                <span class="form-span">{{field.label.text}}</span>
+                {{ field(class="form-input") }}
+            </label>
+        {% endfor %}
+        <button type="submit" class="btn form-btn">Create!</button>
+    </form>
+{% endblock %}

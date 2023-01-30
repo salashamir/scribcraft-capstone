@@ -1,0 +1,51 @@
+.scribs-list {
+    margin-top: 4rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
+    gap: 2rem;
+}
+
+.scribs-list a {
+    background-color: #fff;
+    padding: 1.6rem;
+    border-radius: 6px;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.05);
+    text-decoration: none;
+    color:inherit;
+
+    transition: all 0.3s ease;
+}
+
+.scribs-list a:hover {
+    transform: translateY(-5px) scale(1.05);
+}
+
+.scribs-list h4 {
+    font-size: 1.5rem;
+    color: var(--heading-color);
+}
+
+.scribs-list p {
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+
+.scribs-list .lower-half {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgb(242, 231, 255);
+}
+
+.scribs-list ul {
+    margin: 1rem 0;
+    display: flex;
+}
+
+.scribs-list li {
+    margin-right: 1rem;
+}
+
+.scribs-list .avatar {
+    width: 3rem;
+    height: 3rem;
+}

@@ -1,0 +1,53 @@
+.scribs-filter {
+    margin: 3rem auto;
+}
+
+.scribs-filter nav {
+    display: flex;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 4px;
+}
+
+.scribs-filter p {
+    font-size: 1.4rem;
+    margin-right: 1rem;
+}
+
+.scribs-filter button {
+    background: transparent;
+    padding: 0 1rem;
+    border: 0;
+    font-family: inherit;
+    font-weight: bold;
+    color: var(--text-color);
+    cursor:pointer;
+    border-right: 1px solid #e4e4e4;
+    font-size: 1.4rem;
+}
+
+.scribs-filter button:last-of-type {
+    border: none;
+}
+
+.scribs-filter button:hover, button:active {
+    color: var(--primary-color);
+}
+
+#scribs-filter-search {
+    color: #3401c0;
+    font-family: inherit;
+    font-size: 1.4rem;
+    border: 1px solid #e4e4e4;
+    border-radius: 12px;
+    padding-inline: 1rem;
+}
+
+#scribs-filter-search:focus {
+    outline: none;
+    border: 1px solid #9e7cfa;
+}
+
+#scribs-filter-search::placeholder {
+    font-family: inherit;
+}

@@ -4,6 +4,8 @@
 
 {% block title %}Dashboard{% endblock %}
 
-{% block dashboard %}
+{% block center_pane %}
+    <h2 class="page-title">Dashboard</h2>
+    {% include './components/scribs-filter.html' %}
     {{scribs_list(scribs)}}
 {% endblock %}

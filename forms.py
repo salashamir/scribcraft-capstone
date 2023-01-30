@@ -34,3 +34,11 @@ class UserLoginForm(FlaskForm):
         message="Username cannot be blank."), Length(min=4, max=20, message="Username must be between 4 and 20 characters.")])
     password = PasswordField('Password', validators=[Length(
         min=8, message="Password must be longer than 7 characters."), DataRequired(message="Password field cannot be blank.")])
+
+
+class NewScribForm(FlaskForm):
+    """Form for creating a new scrib"""
+    title = StringField('Title', validators=[
+                        DataRequired(message="Title must be included.")])
+    prompt = TextAreaField('Prompt', validators=[
+        DataRequired(message="You must submit a prompt.")])

@@ -1,8 +1,8 @@
 <nav class="navbar">
     <ul>
         <li class="logo {{ 'dark_logo' if g.user else 'light_logo' }}">
-            <img src="{{url_for('static', filename='images/scribcraft.svg')}}" alt="Scribcraft logo">
-            <span>Scribcraft</span>
+            <a href="{{url_for('root')}}"><img src="{{url_for('static', filename='images/scribcraft.svg')}}" alt="Scribcraft logo">
+            <span>Scribcraft</span></a>
         </li>
         {% if not g.user %}
         <li><a class="nav-link" href="{{url_for('login')}}">Login</a></li>

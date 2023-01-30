@@ -10,14 +10,16 @@
             <p>No scribs found!</p>
         {% else %}
             {% for scrib in scribs %}
-                <a href="/scribs/{{scrib.id}}">
+                <a href="{{url_for('show_scrib', scrib_id=scrib.id)}}">
                     <h4>{{scrib.title}}</h4>
-                    <p>Created: {{ scrib.date_time }}</p>
+                    <p><strong>Created:</strong> {{ scrib.date_time }}</p>
+                    <div class="lower-half">
                     <ul>
                         <li>
                             {{ avatar(scrib.user.image_url) }}
                         </li>
                     </ul>
+                    </div>
                 </a>
             {% endfor %}
         {% endif %}

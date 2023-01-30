@@ -1,4 +1,5 @@
 """SQLAlchemy models for Scribcraft"""
+import datetime
 
 from sqlalchemy.sql import func
 from flask_bcrypt import Bcrypt
@@ -27,8 +28,9 @@ class User(db.Model):
     image_url = db.Column(
         db.String(150), default="/static/images/quill_and_ink.png")
     date_time = db.Column(db.DateTime(timezone=True),
-                          server_default=func.now())
-    about_me = db.Column(db.Text)
+                          server_default=db.func.current_timestamp())
+    about_me = db.Column(
+        db.Text, default="Write something about yourself here!")
     password = db.Column(db.String(150), nullable=False)
     scribs = db.relationship('Scrib', backref="user")
     comments = db.relationship("Comment", backref="user")
@@ -36,6 +38,19 @@ class User(db.Model):
     def __repr__(self):
         """for debugging purposes return clear user string"""
         return f"<User #{self.id}: {self.username}, {self.email}>"
+
+    def serialize(self):
+        """return dictionary representation of user object"""
+
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+            "image_url": self.image_url,
+            "timestamp": self.date_time,
+            "bio": self.about_me,
+            "scribs": [scrib.serialize() for scrib in self.scribs]
+        }
 
     @classmethod
     def signup(cls, username, email, password, image_url):
@@ -67,13 +82,37 @@ class Scrib(db.Model):
     __tablename__ = "scribs"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    title = db.Column(db.Text, nullable=False)
+    title = db.Column(db.Text, nullable=False, unique=True)
     prompt = db.Column(db.Text, nullable=False)
     scrib_text = db.Column(db.Text, nullable=False)
     date_time = db.Column(db.DateTime(timezone=True),
-                          server_default=func.now())
+                          server_default=db.func.current_timestamp())
+    concept_images = db.relationship('ConceptImage', backref="scrib")
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id', ondelete='CASCADE'), nullable=False)
+
+    def serialize(self):
+        """return dictionary representation of user object"""
+
+        return {
+            "id": self.id,
+            "title": self.title,
+            "prompt": self.prompt,
+            "scrib_text": self.scrib_text,
+            "timestamp": self.date_time,
+            "concept_images": [concept_image.concept_image_url for concept_image in self.concept_images],
+            "user_id": self.user_id
+        }
+
+
+class ConceptImage(db.Model):
+    """Model for generated AI images to be stored"""
+    __tablename__ = "concept_images"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    concept_image_url = db.Column(db.Text, nullable=False)
+    scrib_id = db.Column(db.Integer, db.ForeignKey(
+        'scribs.id', ondelete='CASCADE'), nullable=False)
 
 
 class Comment(db.Model):
@@ -83,7 +122,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     comment_text = db.Column(db.Text, nullable=False)
     date_time = db.Column(db.DateTime(timezone=True),
-                          server_default=func.now())
+                          server_default=db.func.current_timestamp())
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id', ondelete='CASCADE'), nullable=False)
     scrib_id = db.Column(db.Integer, db.ForeignKey(
