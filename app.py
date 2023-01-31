@@ -187,10 +187,18 @@ def create_scrib():
         title = form.title.data
         prompt = form.prompt.data
 
-        bundle_of_images_text = asyncio.run(
+        [image_urls, scrib_content] = asyncio.run(
             fetch_images_and_scrib_bundle(prompt))
 
-        scrib = Scrib()
+        scrib = Scrib(title=title, prompt=prompt,
+                      scrib_text=scrib_content, user_id=g.user.id)
+
+        db.session.add(scrib)
+        db.session.commit()
+
+        add_concept_art_to_db(image_urls, scrib.id)
+
+        return redirect(url_for('root'))
 
     return render_template('user/create-scrib.html', form=form)
 
