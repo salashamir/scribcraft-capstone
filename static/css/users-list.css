@@ -1,13 +1,43 @@
 .users-list-wrapper {
     width: 100%;
-    outline: 1px solid red;
+    padding-inline: 3rem;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
     gap: 3rem;
 }
 
 .user-card {
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.063);
     text-align: center;
     padding: 3rem 0;
+    border-radius: 12px;
+}
+
+.user-card:hover {
+    box-shadow: 0 0 5px 3px rgba(160, 89, 240, 0.1);
+}
+
+.user-card a:link, .user-card a:visited {
+    text-decoration: none;
+    color: #444;
+}
+
+.user-card a:hover, .user-card a:active {
+    text-decoration: underline;
+}
+
+.user-card .avatar {
+    border: 1.5px solid rgb(92, 28, 230);
+    height:10rem;
+    width:10rem;
+}
+
+.user-card .card-user {
+    font-size: 2.2rem;
+    color: #333;
+}
+
+.user-card .scrib-stat {
+    font-size: 1.6rem;
+    color: #555;
 }

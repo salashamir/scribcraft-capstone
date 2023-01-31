@@ -184,7 +184,13 @@ def create_scrib():
     form = NewScribForm()
 
     if form.validate_on_submit():
-        pass
+        title = form.title.data
+        prompt = form.prompt.data
+
+        bundle_of_images_text = asyncio.run(
+            fetch_images_and_scrib_bundle(prompt))
+
+        scrib = Scrib()
 
     return render_template('user/create-scrib.html', form=form)
 
@@ -224,6 +230,51 @@ def add_header(req):
 
 
 # DEFINITIONS for AI api requests
+async def fetch_images_and_scrib_bundle(prompt):
+    """Call other two async api functions to run requests concurrently"""
+
+    async with aiohttp.ClientSession() as session:
+
+        tasks = []
+        tasks.append(asyncio.ensure_future(
+            post_generate_image_art_API(session, prompt)))
+        tasks.append(asyncio.ensure_future(
+            post_generate_scrib_content_API(session, prompt)))
+
+        bundle = await asyncio.gather(*tasks)
+        return bundle
+
+
+async def post_generate_image_art_API(session, prompt):
+    """async function to fetch concept art"""
+
+    headers = {'Authorization': f"Bearer {API_KEY}",
+               'Content-Type': 'application/json'}
+    prompt_with_base = BASE_IMG_PROMPT + prompt
+    async with session.post(f"{AI_API_BASE_URL}images/generations", headers=headers, json={
+        'prompt': prompt_with_base,
+        "n": 5,
+        "size": "512x512"
+    }) as res:
+        concept_art_images = await res.json()
+        return [item['url'] for item in concept_art_images['data']]
+
+
+async def post_generate_scrib_content_API(session, prompt):
+    """async function to fetch story generated"""
+
+    headers = {'Authorization': f"Bearer {API_KEY}",
+               'Content-Type': 'application/json'}
+    prompt_with_base = STORY_GENERATION_BASE_PROMPT + prompt
+
+    async with session.post(f"{AI_API_BASE_URL}completions", headers=headers, json={
+        "model": "text-davinci-003",
+        "prompt": prompt_with_base,
+        "max_tokens": 750,
+        "temperature": 0.3
+    }) as res:
+        generated_text = await res.json()
+        return generated_text["choices"][0]["text"]
 
 
 def generate_concept_art_list_API(prompt):
