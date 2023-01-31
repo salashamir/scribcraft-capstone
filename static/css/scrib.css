@@ -1,0 +1,54 @@
+.scrib-details {
+    display:grid;
+    grid-template-columns: 3fr 2fr;
+    align-items: start;
+    gap: 6rem;
+}
+
+/* individual scrib */
+.scrib-summary {
+    background-color: #fff;
+    padding: 3rem;
+    border-radius: 5px;
+}
+
+.scrib-summary .scrib-title {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 3rem;
+}
+
+.scrib-summary .scrib-author {
+    color: #666;
+    font-size: 1.8rem;
+    margin: 1.5rem 0;
+}
+
+.scrib-summary .scrib-author span a:link,
+.scrib-summary .scrib-author span a:visited {
+    color: rgb(99, 27, 255);
+    text-decoration: none;
+    font-size: 1.9rem;
+
+    transition: all 0.3s ease;
+}
+
+.scrib-summary .scrib-author span a:hover,
+.scrib-summary .scrib-author span a:active {
+    color: rgb(139, 92, 241);
+    text-decoration: underline;
+}
+
+.scrib-summary .creation-date {
+    margin: 1rem 0 3rem;
+    font-size: 1.5rem;
+    color: var(--title-color)
+}
+
+.scrib-summary .details {
+    margin: 2rem 0;
+    color: #555;
+    line-height: 3.4rem;
+}
+
+

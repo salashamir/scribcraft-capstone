@@ -1,10 +1,11 @@
+{% from 'components/macros.html' import scrib_macro %}
+{% from 'components/macros.html' import avatar %}
 {% extends './home.html' %}
 
 {% block title %}{{scrib.title}}{% endblock %}
 
 {% block center_pane %}
-    <h2 class="page-title">{{scrib.title}}</h2>
-    {% for scrib_paragraph in scrib.scrib_text.split("\n\n") %}
-    <p>{{scrib_paragraph}}</p>
-    {% endfor %}
+    <div class="scrib-details">
+        {{scrib_macro(scrib)}}
+    </div>
 {% endblock %}

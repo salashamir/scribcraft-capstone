@@ -1,0 +1,13 @@
+{% from 'components/macros.html' import avatar %}
+{% from 'components/macros.html' import user %}
+{% extends './home.html' %}
+
+{% block title %}Users{% endblock %}
+
+{% block center_pane %}
+    <div class="users-list-wrapper">
+        {% for user_obj in users %}
+            {{ user(user_obj) }}
+        {% endfor %}
+    </div>
+{% endblock %}

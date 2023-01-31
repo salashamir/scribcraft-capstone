@@ -4,6 +4,22 @@
     </div>
 {% endmacro %}
 
+{% macro scrib_macro(scrib) %}
+    <div>
+        <div class="scrib-summary">
+            <h2 class="scrib-title">{{scrib.title}}</h2>
+            <p class="scrib-author">By <span><a href="/users/7">{{scrib.user.username}}</a></span></p>
+            <p class="creation-date">Generated on {{scrib.date_time}}</p>
+            {% for scrib_paragraph in scrib.scrib_text.split("\n\n") %}
+                <p class="details">{{scrib_paragraph}}</p>
+            {% endfor %}
+            <div class="scrib-user">
+                {{ avatar(scrib.user.image_url) }}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
 {% macro scribs_list(scribs) %}
     <div class="scribs-list">
         {% if scribs | length == 0 %}
@@ -23,5 +39,15 @@
                 </a>
             {% endfor %}
         {% endif %}
+    </div>
+{% endmacro %}
+
+{% macro user(user) %}
+    <div class="user-card">
+        <a href=f"/users/{user.id}">
+            {{ avatar(user.image_url) }}
+            <p>{{user.username}}</p>
+            <p class="scrib-stat">{{user.scribs | length}} scribs</p>
+        </a>
     </div>
 {% endmacro %}

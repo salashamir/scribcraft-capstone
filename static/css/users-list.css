@@ -1,0 +1,13 @@
+.users-list-wrapper {
+    width: 100%;
+    outline: 1px solid red;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+    gap: 3rem;
+}
+
+.user-card {
+    background-color: #fff;
+    text-align: center;
+    padding: 3rem 0;
+}

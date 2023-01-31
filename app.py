@@ -1,5 +1,7 @@
 import os
 import requests
+import aiohttp
+import asyncio
 
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask, url_for, render_template, request, flash, redirect, session, g, jsonify
@@ -187,12 +189,28 @@ def create_scrib():
     return render_template('user/create-scrib.html', form=form)
 
 
+# USER ROUTES
+
+
+@app.route('/users')
+def users_page():
+    """Presents list of site users and allows filtering by username"""
+
+    if not g.user:
+        flash("You must be logged in to view this page", "danger")
+        return redirect(url_for('login'))
+
+    users = User.query.all()
+
+    return render_template('user/users.html', users=users)
+
 ##############################################################################
 # Turn off all caching in Flask
 #   (useful for dev; in production, this kind of stuff is typically
 #   handled elsewhere)
 #
 # https://stackoverflow.com/questions/34066804/disabling-caching-in-flask
+
 
 @app.after_request
 def add_header(req):
