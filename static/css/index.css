@@ -48,3 +48,26 @@ body {
     color: var(--heading-color);
     display: inline-block;
 }
+
+.toggle-content {
+    display: none;
+}
+
+.toggle-content.is-visible {
+    display: block;
+}
+
+.loading {
+    text-align: center;
+}
+
+.loading-img {
+    height: 8rem;
+    width: 8rem;
+}
+
+.loading-text {
+    font-size: 3.2rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+}

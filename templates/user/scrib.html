@@ -7,5 +7,10 @@
 {% block center_pane %}
     <div class="scrib-details">
         {{scrib_macro(scrib)}}
+        <div>
+            {% for image in scrib.concept_images %}
+                <img src="{{image.concept_image_url}}" alt="">
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

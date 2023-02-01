@@ -4,7 +4,7 @@
     <div class="sidebar-content">
         <div class="user">
             {{ avatar(g.user.image_url) }}
-            <p>Hi, {{g.user.username}}!</p>
+            <p>Hi, <span id="logged-in-user">{{g.user.username}}</span>!</p>
         </div>
         <nav class="links">
             <ul>

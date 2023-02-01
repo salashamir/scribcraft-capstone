@@ -2,6 +2,8 @@ import os
 import requests
 import aiohttp
 import asyncio
+import urllib.request
+import wget
 
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask, url_for, render_template, request, flash, redirect, session, g, jsonify
@@ -28,7 +30,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
-app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = True
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 toolbar = DebugToolbarExtension(app)
 
@@ -142,7 +144,7 @@ def retrieve_scribs():
     Returns list of scrib objects serialzied to dictionaries
     """
 
-    all_scribs = [scrib.serialize() for scrib in Scrib.query.all()]
+    all_scribs = [scrib.serialize_scrib() for scrib in Scrib.query.all()]
     return jsonify(scribs=all_scribs)
 
 
@@ -155,7 +157,7 @@ def retrieve_users():
     Returns list of user objects serialzied to dictionaries
     """
 
-    all_users = [user.serialize() for user in User.query.all()]
+    all_users = [user.serialize_user() for user in User.query.all()]
     return jsonify(users=all_users)
 
 
@@ -181,9 +183,12 @@ def create_scrib():
         flash("You must be logged in to view this page.", "danger")
         return redirect(url_for('login'))
 
+    loading = False
+
     form = NewScribForm()
 
     if form.validate_on_submit():
+        loading = True
         title = form.title.data
         prompt = form.prompt.data
 
@@ -195,12 +200,13 @@ def create_scrib():
 
         db.session.add(scrib)
         db.session.commit()
+        loading = False
 
         add_concept_art_to_db(image_urls, scrib.id)
 
         return redirect(url_for('root'))
 
-    return render_template('user/create-scrib.html', form=form)
+    return render_template('user/create-scrib.html', form=form, loading=loading)
 
 
 # USER ROUTES
@@ -337,3 +343,8 @@ def generate_scrib_content_API(prompt):
     })
 
     return res.json()["choices"][0]["text"]
+
+
+# JUNK
+def save_to_file(url):
+    wget.download(url, '/Users/salashamir/Desktop/concept-art.jpg')

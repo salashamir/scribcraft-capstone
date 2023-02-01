@@ -4,7 +4,7 @@
 
 {% block center_pane %}
     <h2 class="page-title">Create a new scrib!</h2>
-    <form method="POST" class="scrib-form">
+    <form method="POST" class="scrib-form toggle-content is-visible">
         <h2 class="form-heading">New scrib!</h2>
         {{ form.hidden_tag() }}
         {% for field in form if field.widget.input_type != 'hidden' %}
@@ -18,4 +18,8 @@
         {% endfor %}
         <button type="submit" class="btn form-btn">Create!</button>
     </form>
+    <div class="loading toggle-content">
+        <img class="loading-img" src="{{url_for('static', filename='images/loading2.gif')}}" alt="loading gif">
+        <p class="loading-text">Scrib being generated...</p>
+    </div>
 {% endblock %}

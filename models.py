@@ -39,7 +39,7 @@ class User(db.Model):
         """for debugging purposes return clear user string"""
         return f"<User #{self.id}: {self.username}, {self.email}>"
 
-    def serialize(self):
+    def serialize_user(self):
         """return dictionary representation of user object"""
 
         return {
@@ -49,7 +49,7 @@ class User(db.Model):
             "image_url": self.image_url,
             "timestamp": self.date_time,
             "bio": self.about_me,
-            "scribs": [scrib.serialize() for scrib in self.scribs]
+            "scribs": [scrib.serialize_scrib() for scrib in self.scribs]
         }
 
     @classmethod
@@ -91,7 +91,7 @@ class Scrib(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id', ondelete='CASCADE'), nullable=False)
 
-    def serialize(self):
+    def serialize_scrib(self):
         """return dictionary representation of user object"""
 
         return {
@@ -101,7 +101,9 @@ class Scrib(db.Model):
             "scrib_text": self.scrib_text,
             "timestamp": self.date_time,
             "concept_images": [concept_image.concept_image_url for concept_image in self.concept_images],
-            "user_id": self.user_id
+            "user_id": self.user_id,
+            "user_username": self.user.username,
+            "user_image_url": self.user.image_url
         }
 
 
