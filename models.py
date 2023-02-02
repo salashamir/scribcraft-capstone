@@ -30,7 +30,7 @@ class User(db.Model):
     date_time = db.Column(db.DateTime(timezone=True),
                           server_default=db.func.current_timestamp())
     about_me = db.Column(
-        db.Text, default="Write something about yourself here!")
+        db.Text, default="Edit profile to write bio!")
     password = db.Column(db.String(150), nullable=False)
     scribs = db.relationship('Scrib', backref="user")
     comments = db.relationship("Comment", backref="user")

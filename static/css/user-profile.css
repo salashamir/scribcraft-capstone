@@ -1,0 +1,38 @@
+.user-profile {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 3rem;
+}
+
+.user-profile .scribs-list {
+    display:flex;
+    flex-direction: column;
+}
+
+.center {
+    text-align: center;
+}
+
+.user-profile .user-info .avatar {
+    width: 25rem;
+    height: 25rem;
+    border: 4px solid rgb(89, 0, 255);
+    box-shadow: 0 0 2px 3px rgba(0,0,0,0.2);
+}
+
+.user-profile .user-info .avatar img {
+    transition: all 0.3s ease;
+}
+
+.user-profile .user-info .avatar img:hover {
+    transform: scale(1.3);
+}
+
+.user-bio {
+    background-color: rgba(255, 255, 255, 0.765);
+    border-radius: 12px;
+    margin: 3rem 0;
+    padding: 1rem 1.5rem; 
+    color: #555;
+    box-shadow: 0px 3px 15px rgba(0,0,0,0.2);
+}

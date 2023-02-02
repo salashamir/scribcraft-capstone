@@ -8,7 +8,7 @@
     <div>
         <div class="scrib-summary">
             <h2 class="scrib-title">{{scrib.title}}</h2>
-            <p class="scrib-author">By <span><a href="/users/7">{{scrib.user.username}}</a></span></p>
+            <p class="scrib-author">By <span><a href="/users/{{scrib.user_id}}">{{scrib.user.username}}</a></span></p>
             <p class="creation-date">Generated on {{scrib.date_time}}</p>
             {% for scrib_paragraph in scrib.scrib_text.split("\n\n") %}
                 <p class="details">{{scrib_paragraph}}</p>
@@ -23,12 +23,15 @@
 {% macro scribs_list(scribs) %}
     <div class="scribs-list">
         {% if scribs | length == 0 %}
+        <div class="no-scribs-found">
+            <img src="{{url_for('static', filename='images/sad-gif.gif')}}" alt="">
             <p>No scribs found!</p>
+        </div>
         {% else %}
             {% for scrib in scribs %}
                 <a href="{{url_for('show_scrib', scrib_id=scrib.id)}}">
                     <h4>{{scrib.title}}</h4>
-                    <p><strong>Created:</strong> {{ scrib.date_time }}</p>
+                    <p class="scrib-date"><strong>Created:</strong> {{ scrib.date_time }}</p>
                     <div class="lower-half">
                     <ul>
                         <li>
@@ -44,7 +47,7 @@
 
 {% macro user(user) %}
     <div class="user-card">
-        <a href=f"/users/{user.id}">
+        <a href="/users/{{user.id}}">
             {{ avatar(user.image_url) }}
             <p class="card-user">{{user.username}}</p>
             <p class="scrib-stat">{{user.scribs | length}} scribs</p>

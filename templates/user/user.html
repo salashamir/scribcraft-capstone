@@ -1,0 +1,24 @@
+{% from 'components/macros.html' import avatar %}
+{% from 'components/macros.html' import scribs_list %}
+{% extends './home.html' %}
+
+{% block title %}{{user.username}}{% endblock %}
+
+{% block center_pane %}
+    <div class="user-profile">
+        <div class="user-scribs">
+            {{ scribs_list(user.scribs) }}
+        </div>
+        <div class="user-info">
+            <div class="center">
+            {{ avatar(user.image_url) }}
+            <h2 class="user-profile-username">{{user.username}}</h2>
+            <p class="member-since">Member since: <span>{{user.date_time }}</span></p>
+        </div>
+        <p class="user-bio">{{user.about_me}}</p>
+        {% if g.user.id == user.id%}
+        <a class="dark-btn center" href="/users/edit/{{user.id}}">Edit profile</a>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

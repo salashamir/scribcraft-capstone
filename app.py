@@ -9,6 +9,7 @@ from dotenv import load_dotenv, find_dotenv
 from flask import Flask, url_for, render_template, request, flash, redirect, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.sql import func
 
 from forms import CommentForm, UserSignupForm, UserLoginForm, NewScribForm
 from models import db, connect_db, User, Scrib, Comment, ConceptImage
@@ -223,6 +224,19 @@ def users_page():
     users = User.query.all()
 
     return render_template('user/users.html', users=users)
+
+
+@app.route('/users/<int:user_id>')
+def show_user_profile(user_id):
+    """Page to display a specific user profile including some of their info and their scribs"""
+
+    if not g.user:
+        flash("You must be logged in to view this page.", "danger")
+        return redirect('login')
+    
+    user = User.query.get_or_404(user_id)
+
+    return render_template('user/user.html', user=user)
 
 ##############################################################################
 # Turn off all caching in Flask

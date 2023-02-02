@@ -1,4 +1,5 @@
 const createScribForm = document.querySelector('.scrib-form');
+const formDiv = document.querySelector('.form-div');
 const loadingGif = document.querySelector('.loading');
 const scribsList = document.querySelector('.scribs-list');
 const scribsFilterInput = document.querySelector('#scribs-filter-search');
@@ -16,7 +17,7 @@ const toggle = (elem) => {
 };
 
 createScribForm?.addEventListener('submit', () => {
-    toggle(createScribForm);
+    toggle(formDiv);
     toggle(loadingGif);
 });
 
@@ -71,7 +72,7 @@ const createScribCardTemplate = (scrib) => {
     return `
         <a href="/scribs/${scrib.id}">
             <h4>${scrib.title}</h4>
-            <p><strong>Created:</strong> ${scrib.timestamp}</p>
+            <p class="scrib-date"><strong>Created:</strong> ${scrib.timestamp}</p>
             <div class="lower-half">
             <ul>
                 <li>

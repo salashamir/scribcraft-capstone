@@ -1,5 +1,16 @@
+.no-scribs-found {
+    font-size: 2.4rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+.no-scribs-found img {
+    width: 20rem;
+    height:auto;
+}
+
 .scribs-list {
-    margin-top: 4rem;
+    margin-top: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(25rem, 1fr));
     gap: 2rem;
@@ -25,7 +36,7 @@
     color: var(--heading-color);
 }
 
-.scribs-list p {
+.scribs-list .scrib-date {
     color: var(--text-color);
     font-size: 1.1rem;
 }
