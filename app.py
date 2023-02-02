@@ -1,9 +1,8 @@
 import os
 import requests
+import boto3
 import aiohttp
 import asyncio
-import urllib.request
-import wget
 
 from dotenv import load_dotenv, find_dotenv
 from flask import Flask, url_for, render_template, request, flash, redirect, session, g, jsonify
@@ -11,7 +10,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql import func
 
-from forms import CommentForm, UserSignupForm, UserLoginForm, NewScribForm
+from forms import CommentForm, UserSignupForm, UserLoginForm, NewScribForm, UserEditForm
 from models import db, connect_db, User, Scrib, Comment, ConceptImage
 
 load_dotenv(find_dotenv())
@@ -184,12 +183,9 @@ def create_scrib():
         flash("You must be logged in to view this page.", "danger")
         return redirect(url_for('login'))
 
-    loading = False
-
     form = NewScribForm()
 
     if form.validate_on_submit():
-        loading = True
         title = form.title.data
         prompt = form.prompt.data
 
@@ -201,13 +197,12 @@ def create_scrib():
 
         db.session.add(scrib)
         db.session.commit()
-        loading = False
 
         add_concept_art_to_db(image_urls, scrib.id)
 
-        return redirect(url_for('root'))
+        return redirect(url_for('show_scrib', scrib_id=scrib.id))
 
-    return render_template('user/create-scrib.html', form=form, loading=loading)
+    return render_template('user/create-scrib.html', form=form)
 
 
 # USER ROUTES
@@ -233,10 +228,41 @@ def show_user_profile(user_id):
     if not g.user:
         flash("You must be logged in to view this page.", "danger")
         return redirect('login')
-    
+
     user = User.query.get_or_404(user_id)
 
     return render_template('user/user.html', user=user)
+
+
+@app.route('/users/edit/<int:user_id>', methods=["GET", "POST"])
+def edit_user_profile(user_id):
+    """Page that displays form with prefilled data to edit user"""
+
+    if not g.user:
+        flash("You must be logged in to view this page.", "danger")
+        return redirect(url_for('login'))
+
+    if g.user.id != user_id:
+        flash("Unauthorized access attempt.", "danger")
+        return redirect(url_for('root'))
+
+    form = UserEditForm(obj=g.user)
+
+    user = User.query.get_or_404(user_id)
+
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.email = form.email.data
+        user.image_url = form.image_url.data
+        user.about_me = form.about_me.data
+
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for("show_user_profile", user_id=user.id))
+
+    return render_template("/user/edit-user.html", form=form, user=g.user)
+
 
 ##############################################################################
 # Turn off all caching in Flask
@@ -357,8 +383,3 @@ def generate_scrib_content_API(prompt):
     })
 
     return res.json()["choices"][0]["text"]
-
-
-# JUNK
-def save_to_file(url):
-    wget.download(url, '/Users/salashamir/Desktop/concept-art.jpg')

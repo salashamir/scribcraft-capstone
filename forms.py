@@ -45,7 +45,7 @@ class UserEditForm(FlaskForm):
         message="Email field cannot be blank."), Email(message="Please type a valid email.")])
     image_url = StringField(
         "(Optional )URL for avatar image", validators=[Optional()])
-    bio = TextAreaField('About', validators=[Optional()])
+    about_me = TextAreaField('About', validators=[Optional()])
 
 
 class NewScribForm(FlaskForm):
