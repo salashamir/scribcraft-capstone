@@ -1,5 +1,5 @@
 """SQLAlchemy models for Scribcraft"""
-import datetime
+from datetime import datetime
 
 from sqlalchemy.sql import func
 from flask_bcrypt import Bcrypt
@@ -28,12 +28,12 @@ class User(db.Model):
     image_url = db.Column(
         db.String(150), default="/static/images/quill_and_ink.png")
     date_time = db.Column(db.DateTime(timezone=True),
-                          server_default=db.func.current_timestamp())
+                          default=datetime.utcnow)
     about_me = db.Column(
         db.Text, default="Edit profile to write bio!")
     password = db.Column(db.String(150), nullable=False)
-    scribs = db.relationship('Scrib', backref="user")
-    comments = db.relationship("Comment", backref="user")
+    scribs = db.relationship(
+        'Scrib', backref="user", cascade='all, delete, delete-orphan', single_parent=True)
 
     def __repr__(self):
         """for debugging purposes return clear user string"""
@@ -76,6 +76,16 @@ class User(db.Model):
         return False
 
 
+class ConceptImage(db.Model):
+    """Model for generated AI images to be stored"""
+    __tablename__ = "concept_images"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    concept_image_url = db.Column(db.Text, nullable=False)
+    scrib_id = db.Column(db.Integer, db.ForeignKey(
+        'scribs.id', ondelete='CASCADE'), nullable=False)
+
+
 class Scrib(db.Model):
     """Model for scribs generated from AI API"""
 
@@ -86,8 +96,9 @@ class Scrib(db.Model):
     prompt = db.Column(db.Text, nullable=False)
     scrib_text = db.Column(db.Text, nullable=False)
     date_time = db.Column(db.DateTime(timezone=True),
-                          server_default=db.func.current_timestamp())
-    concept_images = db.relationship('ConceptImage', backref="scrib")
+                          default=datetime.utcnow)
+    concept_images = db.relationship(
+        'ConceptImage', backref="scrib", cascade='all, delete, delete-orphan', single_parent=True)
     user_id = db.Column(db.Integer, db.ForeignKey(
         'users.id', ondelete='CASCADE'), nullable=False)
 
@@ -105,27 +116,3 @@ class Scrib(db.Model):
             "user_username": self.user.username,
             "user_image_url": self.user.image_url
         }
-
-
-class ConceptImage(db.Model):
-    """Model for generated AI images to be stored"""
-    __tablename__ = "concept_images"
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    concept_image_url = db.Column(db.Text, nullable=False)
-    scrib_id = db.Column(db.Integer, db.ForeignKey(
-        'scribs.id', ondelete='CASCADE'), nullable=False)
-
-
-class Comment(db.Model):
-    """Model for comments left on scribs"""
-    __tablename__ = "comments"
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    comment_text = db.Column(db.Text, nullable=False)
-    date_time = db.Column(db.DateTime(timezone=True),
-                          server_default=db.func.current_timestamp())
-    user_id = db.Column(db.Integer, db.ForeignKey(
-        'users.id', ondelete='CASCADE'), nullable=False)
-    scrib_id = db.Column(db.Integer, db.ForeignKey(
-        'scribs.id', ondelete='CASCADE'), nullable=False)

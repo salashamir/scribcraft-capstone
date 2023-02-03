@@ -5,13 +5,6 @@ from wtforms.validators import DataRequired, Email, Length, Optional, EqualTo
 # form classes
 
 
-class CommentForm(FlaskForm):
-    """Form for adding/editing comments"""
-
-    text = TextAreaField('Comment', validators=[DataRequired(
-        message="Comment must contain content body to be submitted.")])
-
-
 class UserSignupForm(FlaskForm):
     """Form for adding a user to db on signup submission"""
 

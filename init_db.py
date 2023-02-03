@@ -1,5 +1,5 @@
 from app import db
-from models import User, Scrib, Comment
+from models import User, Scrib
 
 
 db.drop_all()
@@ -59,14 +59,4 @@ The inciting incident occurs when one night while recovering in the hospital war
 In conclusion we see that despite all odds being against them both they were able unlock some of life’s greatest mysteries together – allowing them both peace within themselves knowing that no matter what happens next they will always have each other’s support along the way!""", user_id=user5.id)
 
 db.session.add_all([scrib1, scrib2, scrib3, scrib4])
-db.session.commit()
-
-comment1 = Comment(comment_text="Great idea! I love the concept and think this would make a tremendous series!",
-                   user_id=user3.id, scrib_id=scrib3.id)
-comment2 = Comment(comment_text="I wonder if you could include some more fantasy elements in this?",
-                   user_id=user6.id, scrib_id=scrib3.id)
-comment3 = Comment(comment_text="These characters maybe could have some more adventurous traits",
-                   user_id=user2.id, scrib_id=scrib1.id)
-
-db.session.add_all([comment1, comment2, comment3])
 db.session.commit()

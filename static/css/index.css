@@ -72,3 +72,7 @@ body {
     font-weight: 600;
     letter-spacing: 1.5px;
 }
+
+.delete-form {
+    margin-top: 3rem;
+}

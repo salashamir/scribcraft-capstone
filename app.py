@@ -8,10 +8,9 @@ from dotenv import load_dotenv, find_dotenv
 from flask import Flask, url_for, render_template, request, flash, redirect, session, g, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.sql import func
 
-from forms import CommentForm, UserSignupForm, UserLoginForm, NewScribForm, UserEditForm
-from models import db, connect_db, User, Scrib, Comment, ConceptImage
+from forms import UserSignupForm, UserLoginForm, NewScribForm, UserEditForm
+from models import db, connect_db, User, Scrib, ConceptImage
 
 load_dotenv(find_dotenv())
 
@@ -26,7 +25,7 @@ app = Flask(__name__)
 
 # set up config properties
 app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.environ.get('DATABASE_URL', 'postgresql:///scribcraft'))
+    os.environ.get('DATABASE_URL', 'postgresql:///scribcraft-1'))
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = False
@@ -262,6 +261,22 @@ def edit_user_profile(user_id):
         return redirect(url_for("show_user_profile", user_id=user.id))
 
     return render_template("/user/edit-user.html", form=form, user=g.user)
+
+
+@app.route('/users/delete', methods=["POST"])
+def delete_user():
+    """Receives post request from form to permanenetly delete user"""
+
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect(url_for('login'))
+
+    user_logout()
+
+    db.session.delete(g.user)
+    db.session.commit()
+
+    return redirect(url_for('signup'))
 
 
 ##############################################################################

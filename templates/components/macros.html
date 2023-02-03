@@ -9,7 +9,7 @@
         <div class="scrib-summary">
             <h2 class="scrib-title">{{scrib.title}}</h2>
             <p class="scrib-author">By <span><a href="/users/{{scrib.user_id}}">{{scrib.user.username}}</a></span></p>
-            <p class="creation-date">Generated on {{scrib.date_time}}</p>
+            <p class="creation-date">Generated on {{scrib.date_time.strftime("%B %d, %Y") }}</p>
             {% for scrib_paragraph in scrib.scrib_text.split("\n\n") %}
                 <p class="details">{{scrib_paragraph}}</p>
             {% endfor %}
@@ -31,12 +31,15 @@
             {% for scrib in scribs %}
                 <a href="{{url_for('show_scrib', scrib_id=scrib.id)}}">
                     <h4>{{scrib.title}}</h4>
-                    <p class="scrib-date"><strong>Created:</strong> {{ scrib.date_time }}</p>
+                    <p class="scrib-date"><strong>Created:</strong> {{ scrib.date_time.strftime("%H:%M %B %d, %Y") }}</p>
                     <div class="lower-half">
                     <ul>
                         <li>
                             {{ avatar(scrib.user.image_url) }}
                         </li>
+                        {% if scrib.user_id == g.user.id %}
+                        <button>delete</button>
+                        {% endif %}
                     </ul>
                     </div>
                 </a>
