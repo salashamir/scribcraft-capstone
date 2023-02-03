@@ -1,0 +1,19 @@
+.scrib-error {
+    text-align: center;
+}
+
+.scrib-error img {
+    width: 15rem;
+    height:auto;
+}
+
+.scrib-error p {
+    color: rgb(146, 1, 1);
+    font-size: 2rem;
+    margin: 3rem 0;
+}
+
+.error-title {
+ color: rgb(86, 7, 255);
+ margin-bottom: 2rem;
+}

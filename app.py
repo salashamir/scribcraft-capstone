@@ -188,16 +188,20 @@ def create_scrib():
         title = form.title.data
         prompt = form.prompt.data
 
-        [image_urls, scrib_content] = asyncio.run(
-            fetch_images_and_scrib_bundle(prompt))
+        try:
+            [image_urls, scrib_content] = asyncio.run(
+                fetch_images_and_scrib_bundle(prompt))
 
-        scrib = Scrib(title=title, prompt=prompt,
-                      scrib_text=scrib_content, user_id=g.user.id)
+            scrib = Scrib(title=title, prompt=prompt,
+                          scrib_text=scrib_content, user_id=g.user.id)
 
-        db.session.add(scrib)
-        db.session.commit()
+            db.session.add(scrib)
+            db.session.commit()
 
-        add_concept_art_to_db(image_urls, scrib.id)
+            add_concept_art_to_db(image_urls, scrib.id)
+
+        except Exception as e:
+            return render_template('user/error.html', error_message=e)
 
         return redirect(url_for('show_scrib', scrib_id=scrib.id))
 
@@ -321,12 +325,15 @@ async def post_generate_image_art_API(session, prompt):
                'Content-Type': 'application/json'}
     prompt_with_base = BASE_IMG_PROMPT + prompt
     async with session.post(f"{AI_API_BASE_URL}images/generations", headers=headers, json={
-        'prompt': prompt_with_base,
-        "n": 5,
-        "size": "512x512"
+            'prompt': prompt_with_base,
+            "n": 3,
+            "size": "512x512"
     }) as res:
         concept_art_images = await res.json()
-        return [item['url'] for item in concept_art_images['data']]
+        if "error" in concept_art_images:
+            raise Exception(
+                f"Error message: {concept_art_images['error']['message']}. Error type: {concept_art_images['error']['type']}")
+        return [item['url'] for item in res.json()['data']]
 
 
 async def post_generate_scrib_content_API(session, prompt):
@@ -343,6 +350,10 @@ async def post_generate_scrib_content_API(session, prompt):
         "temperature": 0.3
     }) as res:
         generated_text = await res.json()
+
+        if "error" in generated_text:
+            raise Exception(
+                "Error in generating your text. Your content may be inappropriate. Please try again. 😭")
         return generated_text["choices"][0]["text"]
 
 

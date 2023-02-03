@@ -50,13 +50,11 @@
 .scribs-list ul {
     margin: 1rem 0;
     display: flex;
-}
-
-.scribs-list li {
-    margin-right: 1rem;
+    align-items: flex-start;
+    justify-content: space-between;
 }
 
 .scribs-list .avatar {
-    width: 3rem;
-    height: 3rem;
+    width: 4rem;
+    height: 4rem;
 }

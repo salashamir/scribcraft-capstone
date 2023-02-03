@@ -1,0 +1,14 @@
+{% extends './home.html' %}
+
+{% block title %}ERROR!{% endblock %}
+
+{% block center_pane %}
+<div class="scrib-error">
+    <h1 class="error-title">OOPS! Something went wrong with your scrib creation. 😭</h1>
+    <p>See the error message below:</p>
+
+    <img src="{{url_for('static', filename='images/red-error-icon.png')}}" alt="">
+    <p>{{error_message}}</p>
+
+</div>
+{% endblock %}
