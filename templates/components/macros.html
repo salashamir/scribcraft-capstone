@@ -10,6 +10,11 @@
             <h2 class="scrib-title">{{scrib.title}}</h2>
             <p class="scrib-author">By <span><a href="/users/{{scrib.user_id}}">{{scrib.user.username}}</a></span></p>
             <p class="creation-date">Generated on {{scrib.date_time.strftime("%B %d, %Y") }}</p>
+            {% if g.user.id == scrib.user_id %}
+            <form class="delete-scrib-form" method="POST" action="{{url_for('delete_scrib', scrib_id=scrib.id)}}">
+                <button type="submit" class="red-btn">Delete scrib</button>
+            </form>
+            {% endif %}
             {% for scrib_paragraph in scrib.scrib_text.split("\n\n") %}
                 <p class="details">{{scrib_paragraph}}</p>
             {% endfor %}

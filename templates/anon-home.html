@@ -6,6 +6,9 @@
     <div class="app cozy-bcg">
         <div class="container">
             {% include 'components/navbar.html' %}
+            {% for category, message in get_flashed_messages(with_categories=True) %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
             {% block form %}
             {% endblock %}
             {% include 'components/footer.html' %}

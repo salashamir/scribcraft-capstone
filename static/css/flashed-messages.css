@@ -1,0 +1,21 @@
+.alert {
+    margin-bottom: 2rem;
+    text-align: center;
+    width: 35%;
+    border-radius: 10px;
+    margin: 0 auto;
+    padding: 1.5rem 3rem;
+    font-size: 1.8rem;
+}
+
+.alert-danger{
+    background-color: rgb(255, 248, 248);
+    color: rgb(182, 0, 0);
+    border: 3px solid rgb(182, 0, 0);
+}
+
+.alert-success{
+    background-color: rgb(246, 255, 246);
+    color: rgb(0, 171, 9);
+    border: 3px solid rgb(0, 212, 39);
+}

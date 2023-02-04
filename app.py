@@ -72,6 +72,16 @@ def root():
     return render_template('user/dashboard.html', scribs=scribs)
 
 
+# 404 error
+@app.errorhandler(404)
+def not_found(error):
+    """404 page"""
+
+    if not g.user:
+        return redirect(url_for('login'))
+
+    return render_template("404.html"), 404
+
 # AUTH ROUTES
 
 
@@ -203,9 +213,27 @@ def create_scrib():
         except Exception as e:
             return render_template('user/error.html', error_message=e)
 
+        flash("Scrib created!", "success")
         return redirect(url_for('show_scrib', scrib_id=scrib.id))
 
     return render_template('user/create-scrib.html', form=form)
+
+
+@app.route('/scribs/delete/<int:scrib_id>', methods=["POST"])
+def delete_scrib(scrib_id):
+    """Post route to submit form and delete script"""
+
+    if not g.user:
+        flash("Access unauthorized", "danger")
+        return redirect(url_for('login'))
+
+    scrib = Scrib.query.get_or_404(scrib_id)
+
+    db.session.delete(scrib)
+    db.session.commit()
+
+    flash("Scrib deleted!", "success")
+    return redirect(url_for('root'))
 
 
 # USER ROUTES
@@ -262,6 +290,7 @@ def edit_user_profile(user_id):
         db.session.add(user)
         db.session.commit()
 
+        flash("Profile updated!", "success")
         return redirect(url_for("show_user_profile", user_id=user.id))
 
     return render_template("/user/edit-user.html", form=form, user=g.user)
@@ -333,7 +362,7 @@ async def post_generate_image_art_API(session, prompt):
         if "error" in concept_art_images:
             raise Exception(
                 f"Error message: {concept_art_images['error']['message']}. Error type: {concept_art_images['error']['type']}")
-        return [item['url'] for item in res.json()['data']]
+        return [item['url'] for item in concept_art_images['data']]
 
 
 async def post_generate_scrib_content_API(session, prompt):
