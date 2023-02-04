@@ -1,9 +1,8 @@
 .alert {
-    margin-bottom: 2rem;
     text-align: center;
     width: 35%;
     border-radius: 10px;
-    margin: 0 auto;
+    margin: 0 auto 2rem;
     padding: 1.5rem 3rem;
     font-size: 1.8rem;
 }

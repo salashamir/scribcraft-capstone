@@ -208,7 +208,15 @@ def create_scrib():
             db.session.add(scrib)
             db.session.commit()
 
-            add_concept_art_to_db(image_urls, scrib.id)
+            # upload image urls to s3 bucket bc urls from openai expire after 1 hour
+            s3_bucket_urls = []
+            for index, png_url in enumerate(image_urls, start=1):
+                s3_url = upload_img_to_s3_bucket_from_url(
+                    png_url, scrib.id, index)
+                s3_bucket_urls.append(s3_url)
+
+            # add the s3 urls to the db
+            add_concept_art_to_db(s3_bucket_urls, scrib.id)
 
         except Exception as e:
             return render_template('user/error.html', error_message=e)
@@ -438,3 +446,34 @@ def generate_scrib_content_API(prompt):
     })
 
     return res.json()["choices"][0]["text"]
+
+
+def upload_img_to_s3_bucket_from_url(url: str, scrib_id, img_number):
+    """Uploads an image from input url to s3 bucket and returns url to display it publically from s3"""
+
+    r = requests.get(url, stream=True)
+
+    session = boto3.Session(aws_access_key_id=os.environ.get('ACCESS_KEY'),
+                            aws_secret_access_key=os.environ.get('SECRET_ACCESS_KEY_AWS'))
+    s3 = session.resource('s3')
+
+    bucket_name = "scribcraft.concept"
+    key = f"scrib_{scrib_id}_{img_number}"
+
+    bucket = s3.Bucket(bucket_name)
+    bucket.upload_fileobj(r.raw, key, ExtraArgs={
+                          'ContentType': "image/png"})
+
+    return f"https://s3.amazonaws.com/{bucket_name}/{key}"
+
+
+def get_img_url_from_s3_bucket():
+    """Fetch a url to image stored in bucket"""
+
+    s3 = boto3.client('s3', aws_access_key_id=os.environ.get('ACCESS_KEY'),
+                      aws_secret_access_key=os.environ.get('SECRET_ACCESS_KEY_AWS'))
+
+    url = s3.generate_presigned_url(
+        'get_object', Params={'Bucket': 'scribcraft.concept', 'Key': 'scrib_1'}, ExpiresIn=3600)
+
+    print(url)
