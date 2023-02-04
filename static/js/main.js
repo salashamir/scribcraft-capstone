@@ -7,7 +7,7 @@ const allScribsBtn = document.querySelector("#all-btn")
 const myScribsBtn = document.querySelector("#mine-btn")
 const loggedInUser = document.querySelector("#logged-in-user")?.textContent;
 
-const baseAPIurl = "http://127.0.0.1:5000";
+const baseAPIurl = "https://scribcraft-flask.herokuapp.com";
 
 let scribs_list = [];
 
